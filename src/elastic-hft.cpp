@@ -108,24 +108,26 @@ int main(int argc, char *argv[])
     #endif
     //get the core ids, derive the maximum number of workers and the affinities of the entities
     vector<int>* core_ids=getCoreIDs();
-#if defined GENERATOR_ON_THE_SAME_MACHINE
-    int max_workers=core_ids->size()-4;
-    int emitter_affinity=core_ids->at(1);
-#else
+#if defined GENERATOR_ON_DIFFERENT_MACHINE
     int max_workers=core_ids->size()-3;
     int emitter_affinity=core_ids->at(0);
+#else
+    int max_workers=core_ids->size()-4;
+    int emitter_affinity=core_ids->at(1);
 #endif
+
     //da gestire il caso generatore sulla stessa macchina
     int collector_affinity=core_ids->at(core_ids->size()-2);
     int controller_affinity=core_ids->at(core_ids->size()-1);
     int *affinities=new int[max_workers];
     for(int i=0;i<max_workers;i++)
     {
-#if defined GENERATOR_ON_THE_SAME_MACHINE
-        affinities[i]=core_ids->at(2+i);
-#else
+#if defined GENERATOR_ON_DIFFERENT_MACHINE
         affinities[i]=core_ids->at(1+i);
+#else
+        affinities[i]=core_ids->at(2+i);
 #endif
+
     }
     //affinities: first core for the generator, second for the emitter, then workers and the last two for collector and controller
     assert(num_workers<=max_workers);
@@ -140,6 +142,7 @@ int main(int argc, char *argv[])
     sd->print();
 
     float freq=getMaximumFrequency();
+    float minFreqGHz=getMinimumFrequency()/1000.0;
     CONTROL_PRINT(cout << "CPU Nominal Frequency: "<<freq<< " MHz"<<endl;)
 
 
@@ -405,7 +408,7 @@ int main(int argc, char *argv[])
             {
                 double ampl=(rec_stat->getParDegree(j)-last_par_deg)*(rec_stat->getParDegree(j)-last_par_deg);
                 //euclidean distance
-                ampl+=((((double)last_freq)/1000000.0-1.2)*10-(((double)rec_stat->getFrequency(j))/1000000.0-1.2)*10)*((((double)last_freq)/1000000.0-1.2)*10-(((double)rec_stat->getFrequency(j))/1000000.0-1.2)*10);
+                ampl+=((((double)last_freq)/1000000.0-minFreqGHz)*10-(((double)rec_stat->getFrequency(j))/1000000.0-minFreqGHz)*10)*((((double)last_freq)/1000000.0-minFreqGHz)*10-(((double)rec_stat->getFrequency(j))/1000000.0-minFreqGHz)*10);
                 reconf_amplitude+=sqrt(ampl);
                 last_par_deg=rec_stat->getParDegree(j);
                 last_freq=(int)rec_stat->getFrequency(j);

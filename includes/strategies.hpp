@@ -129,6 +129,7 @@ void resolve_strategy_energy_rt_bb(int h, int step, double part_obj_funct, doubl
 
 	double resp_time,rho,kingman_prev;
     double voltage;
+    double minFreqGHZ=available_frequencies.front()/1000000.0;
 	for(int i=1;i<=max_par_degree;i++)
 	{
 		
@@ -164,22 +165,22 @@ void resolve_strategy_energy_rt_bb(int h, int step, double part_obj_funct, doubl
                 //As switching cost we consider the two reconfiguration choice as a vector of size 2
                 //The switching cost is given by the squared norm-2 of the difference vector
                 //Notice that: the frequency part is converted in GHz and its value reported in a range 0-8 with unitary step
-                //(2ghz is the max frequency, 1.2 the minimum) in order to be comparable with the number of workers
+                // in order to be comparable with the number of workers
 				double norm2;
 				if(step==0)
 				{	
 					norm2=(curr_par_degree-reconf_vector[0].nw)*(curr_par_degree-reconf_vector[0].nw);
                     //norm2+=100*(curr_frequency/1000000.0-reconf_vector[0].freq/1000000.0)*(curr_frequency/1000000.0-reconf_vector[0].freq/1000000.0);
-                    double curr_f=(curr_frequency/1000000.0-1.2)*10;
-                    double past_f=(reconf_vector[0].freq/1000000.0-1.2)*10;
+                    double curr_f=(curr_frequency/1000000.0-minFreqGHZ)*10;
+                    double past_f=(reconf_vector[0].freq/1000000.0-minFreqGHZ)*10;
                      norm2+=(curr_f-past_f)*(curr_f-past_f);
 				}
 				else
 				{
 					norm2=(reconf_vector[step].nw-reconf_vector[step-1].nw)*(reconf_vector[step].nw-reconf_vector[step-1].nw);
 //                    norm2+=100*(reconf_vector[step].freq/1000000.0-reconf_vector[step-1].freq/1000000.0)*(reconf_vector[step].freq/1000000.0-reconf_vector[step-1].freq/1000000.0);
-                    double freq_step=(reconf_vector[step].freq/1000000.0-1.2)*10;
-                    double freq_step_min_one=(reconf_vector[step-1].freq/1000000.0-1.2)*10;
+                    double freq_step=(reconf_vector[step].freq/1000000.0-minFreqGHZ)*10;
+                    double freq_step_min_one=(reconf_vector[step-1].freq/1000000.0-minFreqGHZ)*10;
                     norm2+=(freq_step-freq_step_min_one)*(freq_step-freq_step_min_one);
 				}
 //				obj_funct+=gamma*sqrt(norm2);

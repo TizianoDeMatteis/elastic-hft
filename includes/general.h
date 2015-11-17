@@ -56,7 +56,6 @@
 	DEFINEs
 *****************************************/
 
-#define GENERATOR_ON_THE_SAME_MACHINE
 #define CACHE_LINE_SIZE 64                  //cache block size
 #define QUEUE_SIZE 10000                    //replicas' queue length
 
@@ -72,7 +71,11 @@
 //Names of output files
 #define CLASS_FILE "classes"
 #define LAT_FILE "latencies"
+#if defined(PRINT_DEBUG)
 #define DEBUG(X) X;
+#else
+#define DEBUG(X)
+#endif
 #if defined(PRINT_CONTROL_INFO)
 #define CONTROL_PRINT(X) X;                 //used to print verbose informations about reconfigurations
 #else

@@ -1,6 +1,7 @@
 /*---------------------------------------------------------------------
 
 Copyright (C) 2015- by Tiziano De Matteis (dematteis <at> di.unipi.it)
+        and Gabriele Mencagli
 
 This file is part of elastic-hft.
 

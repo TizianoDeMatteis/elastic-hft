@@ -210,7 +210,7 @@ void * collector(void *args) {
                             msg::CollectorMonitoring *reconf_finished=new msg::CollectorMonitoring(0); //we don't need additional data
                             reconf_finished->tag=msg::MonitoringTag::RECONF_FINISHED_TAG;
                             bsend(reconf_finished,cn_outqueue);
-                            CONTROL_PRINT(cout<<ANSI_COLOR_YELLOW "[COLLECTOR] reconf finished" ANSI_COLOR_RESET<<endl;)
+                            DEBUG(cout<<ANSI_COLOR_YELLOW "[COLLECTOR] reconf finished" ANSI_COLOR_RESET<<endl;)
                         }
 
                     }
@@ -397,7 +397,7 @@ void * collector(void *args) {
                 if(reconf_data->tag==msg::ReconfTag::INCREASE_PAR_DEGREE)
 				{
 					//if there are newly spanned threads, copy their queues
-                    CONTROL_PRINT(cout <<ANSI_COLOR_YELLOW "[COLLECTOR] Received message: add "<<reconf_data->par_degree_changes<<" workers" ANSI_COLOR_RESET<<endl;)
+                    DEBUG(cout <<ANSI_COLOR_YELLOW "[COLLECTOR] Received message: add "<<reconf_data->par_degree_changes<<" workers" ANSI_COLOR_RESET<<endl;)
 					
 					//take the new queues
 					for(int i=0;i<reconf_data->par_degree_changes;i++)
@@ -412,7 +412,7 @@ void * collector(void *args) {
 				else
                     if(reconf_data->tag==msg::ReconfTag::DECREASE_PAR_DEGREE)
 					{
-                        CONTROL_PRINT(cout <<ANSI_COLOR_YELLOW "[COLLECTOR] Received message: remove "<<abs(reconf_data->par_degree_changes)<<" workers" ANSI_COLOR_RESET<<endl;)
+                        DEBUG(cout <<ANSI_COLOR_YELLOW "[COLLECTOR] Received message: remove "<<abs(reconf_data->par_degree_changes)<<" workers" ANSI_COLOR_RESET<<endl;)
 						//we should expect some EOS from them
 						reconf_phase_pard_down=true;
 						work_down_degree=reconf_data->par_degree_changes;

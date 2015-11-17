@@ -26,6 +26,7 @@
 #define UTILS_H
 #include <map>
 #include <vector>
+#include <string>
 /**
  * @brief readVoltagesMap read the voltages Map from the file
  * @param file_name file that contains the voltages. It must be created through the Mammut library
@@ -43,9 +44,17 @@ std::vector<int>* getCoreIDs();
 
 /**
  * @brief getMaximumFrequency returns the maximum nominal frequency of the machine
- * @return
+ * @return the frequency in MHz
  */
 float getMaximumFrequency();
+
+/**
+ * @brief getMinimumFrequency
+ * @return the frequency in MHz
+ */
+float getMinimumFrequency();
+
+std::string intToString(int x);
 
 #endif // UTILS_H
 

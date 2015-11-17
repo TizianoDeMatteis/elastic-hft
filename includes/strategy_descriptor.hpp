@@ -41,24 +41,19 @@ enum class StrategyType{
  * To be a valid configuration file for a strategy, the file passed has to have the following parameters (all lower case)
  * - control_step= duration of the control step expressed in milliseconds
  * - strategy=
- *      - none: no adaptation strategy has to be used
- *      - bandwidth: the strategy assure that the operator is not a bottleneck
- *      - bandwidth_energy: as before but tries to minimize energy consumption
- *      - latency: assure that the average latency is belowe a given threshold
- *      - latency_energy: as before but tries to minimize the energy consumption
- *      - tpds: it is the strategy defined in the paper "Elastic scaling for data stream processing"
- *      - rule_based: strategy that applies a simple rule on utilization values
- *      - lantecy_rule: assure avergae latency by means of simple rules (no models nor predictive strategy)
+ *      - none: no adaptation strategy has to be used. It can be used as baseline tests.
+ *      - latency: the MPC-based strategy that change configuration for assuring that the average latency threhsold is respected. It uses the minimun number of replicas (Lat-Node in the paper, Sect. 5.3)
+ *      - latency_energy: MPC-Based strategies, that changes configuration for respecting the latency theshold. It minimizes the energy consumption (Lat-Power in the paper, Sect. 5.3)
+ *      - spl: it is the strategy defined in the paper "Elastic scaling for data stream processing"
+ *      - latecy_rule: y changes the number of replicas if the relative error between the measured latency and a required one is over a threshold (Rule-Based in the paper, Sect. 5.4)
  * - depending from the strategy type other parameters are required
- *      - alpha=<value>, beta=<value>, gamma=<value>: are the parameters of the
- *                  optimization problem (as described in the article ...). They are
- *                  positive float numbers. They are required for bandwidth, bandwidth_energy,
- *                  latency, latency_energy
+ *      - alpha=<value>, beta=<value>, gamma=<value>: are the parameters for the MPC-Based strategies as described in the paper.
+ *                   They are positive float numbers. They are required for latency, latency_energy
  *      - threshold=<value>: required for latency, latency_energy and latency_rule. Describe the desired
  *                  latency threshold in millisecond (positive float number).
  *      - max_level=<value>, change_sensitivity=<value>, cong_threshold=<value> are required
- *                  by the tpds strategy. Max level is the maximum number of workers -1 that you want to use
- *      - rho_min=<value>, rho_max=<value>: positive float number in [0,1]. Required by rule_based
+ *                  by the tpds strategy
+    - control_step parameter: express the length (in milliseconds) of the control step
  *
  *
  * Please note that for this testing version, we require in any case to insert the control_step parameter, in order
@@ -219,7 +214,7 @@ public:
                 std::cout<< "latency_energy. Horizon="<<horizon<<". Alpha="<<alpha<<", Beta="<<beta<<", Gamma="<<gamma<<". Threshold="<<threshold;
             break;
             case StrategyType::TPDS:
-                std::cout<<"tpds. Change_sensitivity="<<change_sensitivity<<", Congestion threshold="<<congestion_threshold<<", Max_level="<<max_level;
+                std::cout<<"spl. Change_sensitivity="<<change_sensitivity<<", Congestion threshold="<<congestion_threshold<<", Max_level="<<max_level;
             break;
             case StrategyType::LATENCY_RULE:
                 std::cout<<"latency_rule. Threshold= "<<threshold;
@@ -233,7 +228,7 @@ private:
     const std::string strategy_none="none";
     const std::string strategy_latency="latency";
     const std::string strategy_latency_energy="latency_energy";
-    const std::string strategy_tpds="tpds";
+    const std::string strategy_tpds="spl";
     const std::string strategy_rule="rule_based";
     const std::string strategy_latency_rule="latency_rule";
 

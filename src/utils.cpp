@@ -123,12 +123,36 @@ std::vector<int>* getCoreIDs()
 
 }
 
+std::string intToString(int x){
+    std::string s;
+    std::stringstream out;
+    out << x;
+    return out.str();
+}
+
 float getMaximumFrequency()
 {
     //get maximum frequency of the machine. Mammut report it in Khz
     mammut::cpufreq::CpuFreq* frequency=mammut::cpufreq::CpuFreq::local();
     mammut::cpufreq::Domain* domain = frequency->getDomains().at(0);
     std::vector<mammut::cpufreq::Frequency> available_frequencies = domain->getAvailableFrequencies();
+
+    //do not consider eventual 'turboboost' frequency
+    if(intToString(available_frequencies.back()).at(3) == '1')
+    {
+        available_frequencies.pop_back();
+    }
     return available_frequencies.back()/1000.0;
+}
+
+float getMinimumFrequency()
+{
+    //get maximum frequency of the machine. Mammut report it in Khz
+    mammut::cpufreq::CpuFreq* frequency=mammut::cpufreq::CpuFreq::local();
+    mammut::cpufreq::Domain* domain = frequency->getDomains().at(0);
+    std::vector<mammut::cpufreq::Frequency> available_frequencies = domain->getAvailableFrequencies();
+
+
+    return available_frequencies.front()/1000.0;
 }
 

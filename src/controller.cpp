@@ -206,6 +206,13 @@ void *controller (void *args)
 	vector<mammut::cpufreq::Domain*> domains = frequency->getDomains();
 	vector<mammut::cpufreq::Frequency> available_frequencies = domains.at(0)->getAvailableFrequencies();
 
+    //do not consider eventual 'turboboost' frequency
+    if(intToString(available_frequencies.back()).at(3) == '1')
+    {
+        available_frequencies.pop_back();
+    }
+    float minFreqGhz=getMinimumFrequency()/1000.0;
+
 	for(int i=0;i<domains.size();i++)
 		assert(domains.at(i)->setGovernor(mammut::cpufreq::GOVERNOR_USERSPACE));
     mammut::energy::Energy* energy = mammut::energy::Energy::local();
@@ -260,7 +267,7 @@ void *controller (void *args)
 			}
 			if(exiting)
 			{
-                CONTROL_PRINT(cout << "[CONTROLLER] exiting!"<<endl;)
+               // CONTROL_PRINT(cout << "[CONTROLLER] exiting!"<<endl;)
 				break; //come back to emitter data reading (we are exiting...)
 			}
 			
@@ -348,7 +355,7 @@ void *controller (void *args)
                     // predict_reconf_nc(PRED_HORIZON, max_workers,num_workers,forecasted,module_tcalc, max_tcalc_sum,  rt_max_threshold,  nc_sf, pred_trajectory, &exp_max_rt, &nc_prev);
                     // printf("According to the strategy the next par degree should be: %d, Expected max rt: %f NC:%f\n",pred_trajectory[0],exp_max_rt,nc_prev);
 
-                    CONTROL_PRINT(cout << "[CONTROLLER] Strategy resolution time (usec): "<<(current_time_usecs()-start_pred)<<endl;)
+                    CONTROL_PRINT(cout <<ANSI_COLOR_BLUE<< "[CONTROLLER] Strategy resolution time (usec): "<<(current_time_usecs()-start_pred)<<ANSI_COLOR_RESET<<endl;)
 
                     //w/o energy
                     if( sd->type==StrategyType::LATENCY)
@@ -423,7 +430,9 @@ void *controller (void *args)
                     //if needed, change the frequency (note: we can change the frequency but mantain the par degree)
                     if(freq_opt!=freq_pred)
                     {
+#if !defined(PRINT_CONTROL_INFO)
                         cout << ANSI_COLOR_YELLOW "[Reconfiguration] Changing frequency to "<<freq_opt/1000.0<<" MHz"<<endl;
+#endif
                         CONTROL_PRINT(cout << ANSI_COLOR_YELLOW "[CONTROLLER] Changing frequency to "<<freq_opt<<endl;)
 
                         for(int i=0;i<domains.size();i++)

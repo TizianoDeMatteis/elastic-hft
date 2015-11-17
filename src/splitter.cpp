@@ -289,7 +289,7 @@ void *emitter(void *args)
                     // in order to perform state migration
                     if(reconf_data->tag==msg::ReconfTag::INCREASE_PAR_DEGREE)
                     {
-                        CONTROL_PRINT(cout << ANSI_COLOR_YELLOW "[EMITTER] reconfiguration message: add " << reconf_data->par_degree_changes <<" workers " ANSI_COLOR_RESET<<endl;)
+                        DEBUG(cout << ANSI_COLOR_YELLOW "[EMITTER] reconfiguration message: add " << reconf_data->par_degree_changes <<" workers " ANSI_COLOR_RESET<<endl;)
                         //take the new queues
                         for(int i=0;i<reconf_data->par_degree_changes;i++)
                             outqueue[num_workers+i]=reconf_data->wqueues[i];
@@ -299,11 +299,11 @@ void *emitter(void *args)
                     else
                         if(reconf_data->tag==msg::ReconfTag::DECREASE_PAR_DEGREE)//par degree decrease (we will handle them after that their state has been moved out)
                         {
-                            CONTROL_PRINT(cout << ANSI_COLOR_YELLOW "[EMITTER] reconfiguration message: remove " << abs(reconf_data->par_degree_changes)<< " workers" ANSI_COLOR_RESET<<endl;)
+                            DEBUG(cout << ANSI_COLOR_YELLOW "[EMITTER] reconfiguration message: remove " << abs(reconf_data->par_degree_changes)<< " workers" ANSI_COLOR_RESET<<endl;)
                         }
                         else
                         {
-                            CONTROL_PRINT(cout << ANSI_COLOR_YELLOW "[EMITTER] reconfiguration message: rebalance scheduling table!" << endl;)
+                            DEBUG(cout << ANSI_COLOR_YELLOW "[EMITTER] reconfiguration message: rebalance scheduling table!" << endl;)
                         }
 
 
