@@ -253,6 +253,8 @@ private:
         if(par.empty())
             throw std::runtime_error("Bad configuration file: horizon parameter missing");
         horizon=std::stoi(par);
+        if(horizon<1)
+            throw std::runtime_error("Bad configuration file: horizon must be at least equal to one");
     }
 
 

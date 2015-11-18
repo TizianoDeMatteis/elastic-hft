@@ -426,14 +426,24 @@ int main(int argc, char *argv[])
 
         }
 
-        fprintf(fout,"#Total number of reconfiguration:       %d\n",rec_stat->getTotReconf());
-        fprintf(stdout,"#Total number of reconfiguration:       %d\n",rec_stat->getTotReconf());
+        fprintf(fout,"#Total number of reconfigurations:      %d\n",rec_stat->getTotReconf());
+        fprintf(stdout,"#Total number of reconfigurations:      %d\n",rec_stat->getTotReconf());
         if(sd->type==StrategyType::LATENCY_ENERGY)
         {
-            fprintf(fout,"#Adjustments to the number of replica:  %d\n",rec_stat->getParDegreeReconf());
-            fprintf(stdout,"#Adjustments to the number of replica:  %d\n",rec_stat->getParDegreeReconf());
+            fprintf(fout,"#Adjustments to the number of replicas:  %d\n",rec_stat->getParDegreeReconf());
+            fprintf(stdout,"#Adjustments to the number of replicas:  %d\n",rec_stat->getParDegreeReconf());
             fprintf(fout,"#Adjustements to the CPU frequency:      %d\n",rec_stat->getFreqReconf());
             fprintf(stdout,"#Adjustements to the CPU frequency:      %d\n",rec_stat->getFreqReconf());
+        }
+        if(sd->type==StrategyType::LATENCY || sd->type == StrategyType::LATENCY_ENERGY || sd->type == StrategyType::LATENCY_RULE ) //check violation to latency threshold
+        {
+            fprintf(fout,"#Violations wrt the threshold:          %d\n",violations);
+            fprintf(stdout,"#Violations wrt the threshold:          %d\n",violations);
+        }
+        if(sd->type==StrategyType::LATENCY)
+        {
+            fprintf(fout,"#Average Number of used replica:        %f\n",((double)used_cores)/rec_stat->getStatsNumber());
+            fprintf(stdout,"#Average Number of used replica:        %f\n",((double)used_cores)/rec_stat->getStatsNumber());
         }
         //fprintf(fout,"#Total Core Joules:                     %f\n",rec_stat->getTotJoulesCore());
         //fprintf(fout,"#Total Cpu Joules:                      %f\n",rec_stat->getTotJoulesCpu());
@@ -441,16 +451,6 @@ int main(int argc, char *argv[])
         fprintf(stdout,"#Average Watt consumed:                 %f\n",rec_stat->getTotJoulesCore()/(coll_stats->getTime(coll_stats->getStatsNumber()-1)-coll_stats->getTime(0))); //joules per second
         fprintf(fout,"#Reconfiguration amplitude:             %.3f\n",reconf_amplitude/rec_stat->getTotReconf());
         fprintf(stdout,"#Reconfiguration amplitude:             %.3f\n",reconf_amplitude/rec_stat->getTotReconf());
-        if(sd->type==StrategyType::LATENCY)
-        {
-            fprintf(fout,"#Average Number of used replica:        %f\n",((double)used_cores)/rec_stat->getStatsNumber());
-            fprintf(stdout,"#Average Number of used replica:        %f\n",((double)used_cores)/rec_stat->getStatsNumber());
-        }
-        if(sd->type==StrategyType::LATENCY || sd->type == StrategyType::LATENCY_ENERGY || sd->type == StrategyType::LATENCY_RULE ) //check violation to latency threshold
-        {
-            fprintf(fout,"#Violations wrt the threshold:          %d\n",violations);
-            fprintf(stdout,"#Violations wrt the threshold:          %d\n",violations);
-        }
         fprintf(fout,"#Strategy: %s\n",sd->toString());
 
     }

@@ -1,7 +1,7 @@
 #Please specify the path of the following libraries
-FASTFLOW_DIR	=  specify_the_path_to_fastflow
-LMFIT_DIR	= specify_the_path_to_lmfit
-MAMMUT_DIR	= specify_the_path_to_mammut
+FASTFLOW_DIR	= /home/dematteis/fastflow_2015_8
+LMFIT_DIR	= /home/dematteis/lmfit-5.1/
+MAMMUT_DIR	= /home/dematteis/libs/mammut/
 
 CXX             = g++
 CXXFLAGS        = -O3 --std=c++11
