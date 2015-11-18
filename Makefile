@@ -1,7 +1,8 @@
 #Please specify the path of the following libraries
-FASTFLOW_DIR	= /home/dematteis/fastflow_2015_8
-LMFIT_DIR	= /home/dematteis/lmfit-5.1/
-MAMMUT_DIR	= /home/dematteis/libs/mammut/
+#the following environment variable that contains the needed library
+#FASTFLOW_DIR	= path to the fasflow library
+#LMFIT_DIR	= path to the lmfit library
+#MAMMUT_DIR	= path to the Mammut Library
 
 CXX             = g++
 CXXFLAGS        = -O3 --std=c++11
@@ -27,8 +28,8 @@ synthetic-generator: $(SRC)/synthetic_generator.cpp $(AUX_DIR)/socket_func.cpp $
 	$(CXX) $(CXXFLAGS) $(AUX_DIR)/socket_func.cpp $(SRC)/synthetic_generator.cpp utils.o -o $@ $(DEFINES) $(LIBS)  -I$(FASTFLOW_DIR) -L$(MAMMUT_LIB) -lmammut
 
 elastic-hft: elastic-hft.o splitter.o merger.o replica.o controller.o socket_func.o HoltWinters.o utils.o
-	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS) -I$(LMFIT_INC) $(LMFIT_LIB)/liblmfit.so -L$(MAMMUT_LIB) -lmammut  -lpthread -lrt -lm
- 
+	$(CXX) $(CXXFLAGS) -o $@ $^ -L$(LMFIT_LIB) -L$(MAMMUT_LIB) -lmammut  -lpthread -lrt -lm -llmfit
+
 derive-voltage-table: utils/derive_voltage_table.cpp
 	$(CXX) $(CXXFLAGS) -o $@  $^ $(LIBS)  -I$(FASTFLOW_DIR) -I$(MAMMUT_INC) -L$(MAMMUT_LIB) -lmammut
 
