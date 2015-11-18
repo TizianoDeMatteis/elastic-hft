@@ -127,7 +127,7 @@ do
 	rm all*
     
     SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-    bash $(SCRIPT_DIR) compute_avg_metrics.sh metrics.dat > avg_metrics.dat
+    bash $(SCRIPT_DIR)/compute_avg_metrics.sh metrics.dat > avg_metrics.dat
 
     #save all .dat
 	rm stats.dat
