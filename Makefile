@@ -1,20 +1,20 @@
 #Please specify the path of the following libraries
 FASTFLOW_DIR	=  specify_the_path_to_fastflow
-LMFIT_DIR		= specify_the_path_to_lmfit
-MAMMUT_DIR		= specify_the_path_to_mammut
+LMFIT_DIR	= specify_the_path_to_lmfit
+MAMMUT_DIR	= specify_the_path_to_mammut
 
 CXX             = g++
 CXXFLAGS        = -O3 --std=c++11
 LIBS            = -lpthread -lm -lrt
-INCLUDES		= includes
-AUX_DIR			= auxiliary
-SRC		     	= src
-MAMMUT_LIB		= $(MAMMUT_DIR)/lib/
-MAMMUT_INC		= $(MAMMUT_DIR)/include/
-LMFIT_INC		= $(LMFIT_DIR)/include/
-LMFIT_LIB		= $(LMFIT_DIR)/lib/
-TARGET				 = real_generator synthetic_generator elastic-hft derive_voltage_table
-DEFINES				 = -DMONITORING 
+INCLUDES	= includes
+AUX_DIR		= auxiliary
+SRC		= src
+MAMMUT_LIB	= $(MAMMUT_DIR)/lib/
+MAMMUT_INC	= $(MAMMUT_DIR)/include/
+LMFIT_INC	= $(LMFIT_DIR)/include/
+LMFIT_LIB	= $(LMFIT_DIR)/lib/
+TARGET		= real_generator synthetic_generator elastic-hft derive_voltage_table
+DEFINES		= -DMONITORING 
 
 .PHONY: all clean
 

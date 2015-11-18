@@ -130,7 +130,12 @@ int main(int argc, char *argv[])
 
     }
     //affinities: first core for the generator, second for the emitter, then workers and the last two for collector and controller
-    assert(num_workers<=max_workers);
+    if(num_workers>max_workers)
+    {
+
+        cerr << ANSI_COLOR_RED << "Error: the number of starting replica exceeds the maximum allowed that for this machine is equal to "<<max_workers<<ANSI_COLOR_RESET<<endl;
+        exit(-1);
+    }
     assert(sd->control_step%PRINT_RATE==0); //da spostare poi nel main. Altrimenti non funge, serve per garantire i dati corretti al controllore
     CONTROL_PRINT(cout<<"Threads Affinities (core ids):"<<endl;)
     CONTROL_PRINT(cout << "Splitter on: "<< emitter_affinity<< " Merger: "<< collector_affinity<<" Controller: "<< controller_affinity<<endl;)

@@ -352,6 +352,7 @@ void resolve_strategy_rt(int h, int step, int max_par_degree, int *reconf_vector
                 //Exp version
                 //obj_funct+=alpha*pow(2.0,resp_time/rt_threshold);
                 double ratio=((double)resp_time)/rt_threshold;
+//                printf("%d %f %f %f\n",reconf_vector[j],ratio,resp_time,rt_threshold);
                 if(ratio>100)
                     obj_funct+=INT_MAX;
                 else

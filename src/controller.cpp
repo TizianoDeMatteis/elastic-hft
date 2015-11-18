@@ -219,7 +219,7 @@ void *controller (void *args)
 	vector<mammut::energy::CounterCpu*> counters = energy->getCountersCpu();
 	//Initally, we set the frequency at the maximum
 	for(int i=0;i<domains.size();i++)
-		if(domains.at(i)-> setHighestFrequencyUserspace()==false)
+        if(domains.at(i)-> setFrequencyUserspace(available_frequencies.back())==false)
 		{
             std::cerr <<ANSI_COLOR_RED "[CONTROLLER] error in setting the cpu frequency" ANSI_COLOR_RESET<<endl;
 		}
@@ -438,7 +438,8 @@ void *controller (void *args)
                         for(int i=0;i<domains.size();i++)
                         {
                             //printf("Setto su dominio: %d\n",i);
-                            if(domains.at(i)-> setFrequencyUserspace(freq_opt)==false)
+
+                            if(domains.at(i)->setFrequencyUserspace(freq_opt)==false)
                             {
                                 cerr << ANSI_COLOR_RED "[CONTROLLER] Error in setting frequency " ANSI_COLOR_RESET<<endl;
                             }
