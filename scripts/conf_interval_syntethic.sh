@@ -21,19 +21,30 @@
 #    ---------------------------------------------------------------------
 
 #This script take all the configuration file in a given directory and for all of them
-#execute the program multiple times, saving statistics and computing the conf interval for
+#execute the program multiple times, saving statistics and computing the conf interval (95%) for
 #latencies and energy consumption
 
 #/bin/bash
-#CONDIFENCE INTERVAL AT 95
 
 
 #directory that contains all the configuration file
 CONFIG_DIR=configs
 #directory that will contains the results
 RES_DIR=results
-#the path of the real dataset if used
-REAL_DATASET=~/nasdaq_2014_49544800_newfmt
+#checks
+if [ ! -d "$CONFIG_DIR" ]; then
+  echo "The directory $CONFIG_DIR does not exists! Create it and put the desired configuration files or edit the script"
+  exit 1
+fi
+
+if [  -d "$RES_DIR" ]; then
+  echo "The directory $RES_DIR exists! Results could be overwritten"
+fi
+
+
+#number of replicas at startup. Please, it should be equal to the number of replicas
+#used in the calibration scripts (by default 4)
+INITIAL_NUM_REPLICAS=4
 NUM_RUN=5			#number of execution per config
 rm *.dat
 
@@ -51,18 +62,15 @@ do
 	do
              
         #run the program: adjust the following row to meet your needs
-		./elastic-hft 2836 5 8080 1000 25 $conf_file &
+        ./elastic-hft 2836 $INITIAL_NUM_REPLICAS 8080 1000 25 $conf_file &
 		PID=$!
 		sleep 1;
 
-		#run the generator: please comment/uncomment and adjust the following row according to your needs
-		echo "REAL GENERATOR"
-		./real-generator localhost 8080 $REAL_DATASET 49544800 -s 100
-		#echo "SYNTHETIC GENERATOR"
-		#./synthetic-generator localhost 8080 2836 distr_and_rates/probability_distribution 300000 54000000 distr_and_rates/random_walk_rates
+		#run the generator
+		echo "SYNTHETIC GENERATOR"
+		./synthetic-generator localhost 8080 2836 distr_and_rates/probability_distribution 300000 54000000 distr_and_rates/random_walk_rates
 
 		wait $PID	# we have to wait for the termination of the program
-
 
 
 		#take rows that contains values, and paste all the data in a file
@@ -127,7 +135,7 @@ do
 	rm all*
     
     SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-    bash $(SCRIPT_DIR)/compute_avg_metrics.sh metrics.dat > avg_metrics.dat
+    bash $SCRIPT_DIR/compute_avg_metrics.sh metrics.dat > avg_metrics.dat
 
     #save all .dat
 	rm stats.dat
