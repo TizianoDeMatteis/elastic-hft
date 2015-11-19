@@ -19,21 +19,25 @@
 #
 #    ---------------------------------------------------------------------
 #!/bin/bash
-#Calibration Script for the threshold value. It assumes that the files are located like in the repository
+#Calibration Script for the threshold value. It requires the REAL_DATASET env variable to be defined
 
+if [ -z "$1" ]; then
+    echo "Specify as command line argument the dataset path"
+    exit 1
+fi
 
 #fill the conf file
-CONFIG_FILE="strategy=latency\nalpha=2\nbeta= 0.5\ngamma=0.4\nhorizon=1\ncontrol_step=1000"
-THRESHOLD=1.5  #starting value
+CONFIG_FILE="strategy=latency\nalpha=3\nbeta= 0.5\ngamma=0.4\nhorizon=1\ncontrol_step=1000"
+THRESHOLD=7  #starting value
 DECREASE=0.9 #at each step we decrease of the 10%
 INCREASE=1.1 #increase of the 10%
 NUM_IT=10
 INITIAL_NUM_REPLICAS=4
-
 #the number of violation with a given threshold must be in the interval
 # [VIOL_LOW_THRESHOLD,VIOL_UP_THRESHOLD] otherwise the threshold is adjusted and the program runned again
-VIOL_LOW_THRESHOLD=5
-VIOL_UP_THRESHOLD=7
+#in this case a little bit more violations are allowed
+VIOL_LOW_THRESHOLD=10
+VIOL_UP_THRESHOLD=20
 echo -e $CONFIG_FILE
 echo "threshold=$THRESHOLD"
 rm stats.dat
@@ -51,7 +55,7 @@ for ((i=0;i<$NUM_IT;i++)); do
     sleep 1;
 
 	#run the generator
-	./synthetic-generator localhost 8080 2836 distr_and_rates/probability_distribution 300000 54000000 distr_and_rates/random_walk_rates
+	./real-generator localhost 8080 $1 49544800 -s 100
 	wait $PID	# we have to wait for the termination of the program
 
 
@@ -59,7 +63,7 @@ for ((i=0;i<$NUM_IT;i++)); do
 
     VIOL=$(grep Violations stats.dat | cut -f 2 -d ":" | xargs)
     echo "Founded $VIOL violations"
-    echo "$TRESHOLD $VIOL" > calibration
+    echo "$TRESHOLD  $VIOL" > calibration
 
     if (( VIOL<$VIOL_LOW_THRESHOLD )); then
         #too few violations, lower the threshold
