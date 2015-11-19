@@ -31,6 +31,10 @@
 CONFIG_DIR=configs
 #directory that will contains the results
 RES_DIR=results
+#number of replicas at startup. Please, it should be equal to the number of replicas
+#used in the calibration scripts (by default 4)
+INITIAL_NUM_REPLICAS=4
+NUM_RUN=5			#number of execution per config
 #checks
 if [ ! -d "$CONFIG_DIR" ]; then
   echo "The directory $CONFIG_DIR does not exists! Create it and put the desired configuration files or edit the script"
@@ -42,10 +46,6 @@ if [  -d "$RES_DIR" ]; then
 fi
 
 
-#number of replicas at startup. Please, it should be equal to the number of replicas
-#used in the calibration scripts (by default 4)
-INITIAL_NUM_REPLICAS=4
-NUM_RUN=5			#number of execution per config
 rm *.dat
 
 for conf_file in $CONFIG_DIR/*
