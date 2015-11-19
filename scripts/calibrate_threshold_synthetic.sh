@@ -59,7 +59,7 @@ for ((i=0;i<$NUM_IT;i++)); do
 
     VIOL=$(grep Violations stats.dat | cut -f 2 -d ":" | xargs)
     echo "Founded $VIOL violations"
-    echo "$TRESHOLD $VIOL" > calibration
+    echo "$TRESHOLD $VIOL" >> calibration_synth
 
     if (( VIOL<$VIOL_LOW_THRESHOLD )); then
         #too few violations, lower the threshold
