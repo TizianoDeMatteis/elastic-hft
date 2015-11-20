@@ -430,10 +430,10 @@ int main(int argc, char *argv[])
         fprintf(stdout,"#Total number of reconfigurations:      %d\n",rec_stat->getTotReconf());
         if(sd->type==StrategyType::LATENCY_ENERGY)
         {
-            fprintf(fout,"#Adjustments to the number of replicas:  %d\n",rec_stat->getParDegreeReconf());
-            fprintf(stdout,"#Adjustments to the number of replicas:  %d\n",rec_stat->getParDegreeReconf());
-            fprintf(fout,"#Adjustements to the CPU frequency:      %d\n",rec_stat->getFreqReconf());
-            fprintf(stdout,"#Adjustements to the CPU frequency:      %d\n",rec_stat->getFreqReconf());
+            fprintf(fout,"#Adjustments to the number of replicas: %d\n",rec_stat->getParDegreeReconf());
+            fprintf(stdout,"#Adjustments to the number of replicas: %d\n",rec_stat->getParDegreeReconf());
+            fprintf(fout,"#Adjustements to the CPU frequency:     %d\n",rec_stat->getFreqReconf());
+            fprintf(stdout,"#Adjustements to the CPU frequency:     %d\n",rec_stat->getFreqReconf());
         }
         if(sd->type==StrategyType::LATENCY || sd->type == StrategyType::LATENCY_ENERGY || sd->type == StrategyType::LATENCY_RULE ) //check violation to latency threshold
         {
