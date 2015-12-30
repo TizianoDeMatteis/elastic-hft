@@ -99,14 +99,19 @@ std::vector<int>* getCoreIDs()
         num_virt_cores+= cpu->getVirtualCores().size();
      }
      std::vector<int> *core_ids=new std::vector<int>();
-
-     std::vector<VirtualCore*> virtualCores = topology->getVirtualCores();
+     std::vector<PhysicalCore*> physicalCores= topology->getPhysicalCores();
 
      //now take the id of one virtual core per physical core;
      //assuming that physical core are number starting from zero
-     int curr_phys_core=0;
      bool constantTSC=true;
-     for(size_t i = 0; i < virtualCores.size(); i++)
+     for(size_t i=0;i<physicalCores.size();i++)
+     {
+         PhysicalCore* pc=(physicalCores.at(i));
+         core_ids->push_back(pc->getVirtualCore()->getVirtualCoreId());
+         if(!pc->getVirtualCore()->areTicksConstant())
+             constantTSC=false;
+     }
+    /* for(size_t i = 0; i < virtualCores.size(); i++)
      {
        VirtualCore* vc = virtualCores.at(i);
        if(vc->getPhysicalCoreId()==curr_phys_core)
@@ -116,7 +121,7 @@ std::vector<int>* getCoreIDs()
        }
        if(!vc->areTicksConstant())
            constantTSC=false;
-     }
+     }*/
      if(!constantTSC)
          std::cout<< "ATTENTION: the machine has not constant TSC. The program may not work since relies on this to get accurate timings" <<std::endl;
      return core_ids;
