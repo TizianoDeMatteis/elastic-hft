@@ -162,7 +162,7 @@ void * collector(void *args) {
         {
             //cout <<"Result arrived"<<endl;
             #if defined(MONITORING)
-            //save the value of service time as the time elapsed from the last reception (usecs)
+            //save the value of service time as the time elapsed from the last reception (nsecs)
             curr_nsecs=current_time_nsecs();
             stat_service_time.Push((curr_nsecs-last_recvd_nsecs)/1000000.0);
             last_recvd_nsecs=curr_nsecs;

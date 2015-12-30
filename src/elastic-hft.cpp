@@ -440,10 +440,10 @@ int main(int argc, char *argv[])
             fprintf(fout,"#Violations wrt the threshold:          %d\n",violations);
             fprintf(stdout,"#Violations wrt the threshold:          %d\n",violations);
         }
-        if(sd->type==StrategyType::LATENCY)
+        if(sd->type==StrategyType::LATENCY || sd->type == StrategyType::LATENCY_RULE || sd->type==StrategyType::TPDS)
         {
-            fprintf(fout,"#Average Number of used replica:        %f\n",((double)used_cores)/rec_stat->getStatsNumber());
-            fprintf(stdout,"#Average Number of used replica:        %f\n",((double)used_cores)/rec_stat->getStatsNumber());
+            fprintf(fout,"#Average Number of used replica:        %f\n",((double)used_cores)/coll_stats->getStatsNumber());
+            fprintf(stdout,"#Average Number of used replica:        %f\n",((double)used_cores)/coll_stats->getStatsNumber());
         }
         //fprintf(fout,"#Total Core Joules:                     %f\n",rec_stat->getTotJoulesCore());
         //fprintf(fout,"#Total Cpu Joules:                      %f\n",rec_stat->getTotJoulesCpu());
