@@ -1,7 +1,4 @@
 # About elastic-hft
-<div style="text-align:right" markdown="1">
-![Artifact Evaluated](./artifact_stamp.png)
-</div>
 This repository contains the application used to perform the experimental evaluation of *latency- and energy-aware scaling strategies* for data stream processing partitioned-stateful operators proposed in the paper *"Keep Calm and React with Foresight: Strategies for Low-Latency and Energy-Efficient Elastic Data Stream Processing" (PPoPP 2016)*. 
 
 The paper has passed the *Artifact Evaluation* process and the artifact and the related execution procedures are publicly released through this repository. 
