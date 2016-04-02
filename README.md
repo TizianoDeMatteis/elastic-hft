@@ -3,7 +3,7 @@ This repository contains the application used to perform the experimental evalua
 
 The paper has passed the *Artifact Evaluation* process and the artifact and the related execution procedures are publicly released through this repository. 
 *Note that* the evaluation was aimed at reproducing *qualitatively* the results reported in the papers, since the application performance varies depending on the used hardware.
-If you are willing to read the whole documentation please refer to the *auxiliary material* of the paper (publicly available).
+If you are willing to read the whole documentation please refer to the *auxiliary material* of the paper (publicly available, contained in the ae.pdf file).
 
 The application represents the computational kernel of a *High Frequency Trading* application. A *source* thread generates a stream of financial quotes, while the application (named `elastic-hft` in the following) processes the incoming quotes grouped by stock symbols. A sliding window is maintained for each group (quotes belonging to the same stock symbol) and the computation returns a fitting polynomial and other statistics for the last received quotes.
 
